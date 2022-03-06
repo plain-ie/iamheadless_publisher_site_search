@@ -1,0 +1,80 @@
+{% extends 'iamheadless_publisher_site_homepages/base.html' %}
+
+{% load iamheadless_publisher_site_tags %}
+{% load iamheadless_translate_tags %}
+
+{% block content %}
+
+    {% translation_for 'enter keyword' language as TEXT_ENTER_KEYWORD %}
+    {% translation_for 'next' language as TEXT_NEXT %}
+    {% translation_for 'no results found' language as TEXT_NO_RESULTS_FOUND %}
+    {% translation_for 'of' language as TEXT_OF %}
+    {% translation_for 'page' language as TEXT_PAGE %}
+    {% translation_for 'previous' language as TEXT_PREVIOUS %}
+    {% translation_for 'results found' language as TEXT_RESULTS_FOUND %}
+    {% translation_for 'search' language as TEXT_SEARCH %}
+
+    <div class="container iamheadless-publisher-site-jumbo">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12">
+                <h1>
+                    {{ page.title|capfirst }}<br />
+                    <small>{{ TEXT_RESULTS_FOUND|capfirst }}: {{ total }}</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="container iamheadless-publisher-site-content">
+        <div class="row margin-bottom-lg">
+            <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12">
+                <form action="{{ request.path }}" method="GET">
+                    <div class="form-group">
+                        <label for="search_keyword">{{ TEXT_ENTER_KEYWORD|capfirst }}</label>
+                        <input type="text" name="q" class="form-control input-lg" id="search_keyword" value="{{ request.GET.q|default:'' }}" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-default btn-black">{{ TEXT_SEARCH|capfirst }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12">
+                <!-- <h2>
+                    {{ TEXT_RESULTS_FOUND|capfirst }} {{ total }}
+                </h2> -->
+                <h2>
+                    {{ TEXT_PAGE|capfirst }} {{ current_page }} {{ TEXT_OF }} {{ total_pages }}
+                </h2>
+            </div>
+        </div>
+        <div class="row margin-bottom-lg">
+            <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12">
+                {% if results|length != 0 %}
+                    <ul class="results-list" role="list">
+                        {% for result in results %}
+                            <li>
+                                <a href="{{ result|pydantic_model_url:language }}">{{ result|pydantic_model_content:language }}</a><br />
+                                <small>
+                                    {% translation_for result|pydantic_model_value:'_item_type' language as TEXT_ITEM_TYPE %}
+                                    {{ TEXT_ITEM_TYPE|capfirst }},
+                                    {{ result.created_at|date:'d/m/Y' }}
+                                </small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% if previous_url is not None or next_url is not None %}
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12">
+                    <ul class="nav nav-pills nav-justified">
+                        <li role="presentation" {% if previous_url is None %}class="disabled"{% endif %}><a href="{{ previous_url|default_if_none:'#' }}">{{ TEXT_PREVIOUS|capfirst }}</a></li>
+                        <li role="presentation" {% if next_url is None %}class="disabled"{% endif %}><a href="{{ next_url|default_if_none:'#' }}">{{ TEXT_NEXT|capfirst }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
