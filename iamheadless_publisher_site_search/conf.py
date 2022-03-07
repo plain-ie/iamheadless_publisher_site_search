@@ -19,7 +19,7 @@ class Settings:
         return getattr(
             dj_settings,
             self.VAR_TEMPLATE,
-            f'{APP_NAME}/search.html'
+            f'{self.APP_NAME}/search.html'
         )
 
     def __getattr__(self, name):
