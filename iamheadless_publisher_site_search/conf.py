@@ -11,7 +11,16 @@ class Settings:
     APP_NAME = AppConfig.name
     VAR_PREFIX = APP_NAME.upper()
 
+    VAR_TEMPLATE = f'{VAR_PREFIX}_TEMPLATE'
     URLNAME_SEARCH = 'search'
+
+    @property
+    def TEMPLATE(self):
+        return getattr(
+            dj_settings,
+            self.VAR_TEMPLATE,
+            f'{APP_NAME}/search.html'
+        )
 
     def __getattr__(self, name):
         return getattr(dj_settings, name)
