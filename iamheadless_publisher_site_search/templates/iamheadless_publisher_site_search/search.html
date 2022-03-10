@@ -32,8 +32,9 @@
     {% if results|length != 0 %}
         <ul role="list">
             {% for result in results %}
+                {% pydantic_model_content result language as CONTENT %}
                 <li>
-                    <a href="{{ result|pydantic_model_url:language }}">{{ result|pydantic_model_content:language }}</a><br />
+                    <a href="{{ result|pydantic_model_url:language }}">{{ CONTENT.title }}</a><br />
                     <p>
                         {% translation_for result|pydantic_model_value:'_item_type' language as TEXT_ITEM_TYPE %}
                         {{ TEXT_ITEM_TYPE|capfirst }},
