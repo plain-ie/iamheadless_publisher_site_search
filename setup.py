@@ -7,7 +7,7 @@ setup(
 
     # Version number (initial):
     version="0.0.1",
-    
+
     # Application author details:
     author="Maris Erts",
     author_email="maris@plain.ie",
@@ -28,7 +28,7 @@ setup(
     # long_description=open("README.txt").read(),
 
     # Dependent packages (distributions)
-    extras_require=[
+    install_requires=[
         "Django==4.0.1",
     ],
 
