@@ -13,7 +13,7 @@ from .conf import settings
 class SearchViewSet(ItemsViewSet):
 
     count = 10
-    template = 'iamheadless_publisher_site_search/search.html'
+    template = settings.TEMPLATE
 
     def get_context(self):
 
